@@ -1,17 +1,42 @@
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
 const express = require('express')
 const volleyball = require('volleyball')
-const auth = require('./auth/index')
+const auth = require('./auth')
 
 const app = express()
 
 app.use(volleyball)
-app.use('/auth', auth)
+app.use(express.json())
+
 
 app.get('/', (req, res) => {
     res.json({
-        title: 'front page'
+        message: '🦄🌈✨Hello World! 🌈✨🦄'
     })
 })
 
-app.listen(3005, console.log('app listening on port 3005'))
+app.use('/auth', auth)
+
+function notFound(req, res, next) {
+    res.status(404)
+    const error = new Error('Not found - ' + req.originalUrl);
+    next(error);
+}
+
+function errorHandler(err, req, res) {
+    res.status(res.statusCode || 500);
+    res.json({
+        message: err.message,
+        stack: err.stack
+    });
+}
+
+app.use(notFound);
+app.use(errorHandler);
+
+const port = process.env.PORT || 5000
+app.listen(port, () => {
+    console.log(`app listening on port ${port}`)
+});
 
