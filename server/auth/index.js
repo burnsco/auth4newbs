@@ -2,6 +2,12 @@ const express = require('express')
 const Joi = require('@hapi/joi')
 const router = express.Router()
 const bcrypt = require('bcryptjs')
+const cors = require('cors')
+
+const corsOptions = {
+    origin: 'http://localhost:8080',
+    optionsScuccessStatus:  200
+}
 
 
 const db = require('../db/connection')
@@ -17,7 +23,7 @@ router.get('/', (req, res) => {
     res.json({message: 'LOCK'})
 })
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', cors(corsOptions), (req, res, next) => {
   
     const result = Joi.validate(req.body, schema);
 

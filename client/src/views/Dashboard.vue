@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <p>dash</p>
+  <div class="container">
+    <br><br>
+    <h3>Dash Board to go here</h3>
   </div>
 </template>
 

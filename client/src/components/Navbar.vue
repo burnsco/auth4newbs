@@ -1,9 +1,13 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a
+    <router-link
+      to="/"
+      tag="a"
       class="navbar-brand"
-      href="#"
-    >Auth Page</a>
+    >
+      Auth Page
+    </router-link>
+
     <button
       class="navbar-toggler"
       type="button"
@@ -19,44 +23,38 @@
       id="navbarNavDropdown"
       class="collapse navbar-collapse"
     >
-      <ul class="navbar-nav">
-        <router-link
-          to="/"
-          tag="li"
-          class="nav-item"
-        >
-          <a
-            class="nav-link"
-          >Home </a>
-        </router-link>
+      <ul class="navbar-nav mr-auto">
         <router-link
           to="/dashboard"
           tag="li"
           class="nav-item"
         >
           <a
-            class="nav-link"
+            class="nav-link ml-4"
           >Dashboard </a>
         </router-link>
-        <router-link
-          to="/signup"
-          tag="li"
-          class="nav-item"
-        >
-          <a
-            class="nav-link"
-          >Sign Up </a>
-        </router-link>
 
-        <router-link
-          to="/login"
-          tag="li"
-          class="nav-item"
-        >
-          <a
-            class="nav-link"
-          >Login </a>
-        </router-link>
+        <div class="d-flex">
+          <router-link
+            to="/signup"
+            tag="li"
+            class="nav-item"
+          >
+            <a
+              class="nav-link ml-4"
+            >Sign Up </a>
+          </router-link>
+
+          <router-link
+            to="/login"
+            tag="li"
+            class="nav-item ml-4"
+          >
+            <a
+              class="nav-link ml-4"
+            >Login </a>
+          </router-link>
+        </div>
       </ul>
     </div>
   </nav>
