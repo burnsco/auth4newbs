@@ -8,3 +8,5 @@ const db = monk(url);
 db.then(() => {
   console.log('Connected correctly to server')
 })
+
+// HOW TO CONNECT TO A DATABASE

@@ -52,30 +52,33 @@
           Passwords don't match
         </b-alert>
       </b-form-group>
-      <div>
-        <b-button
-          v-show="validation === false"
-          variant="secondary"
-          @click="validUser"
-        >
-          Validate
-        </b-button>
-        <b-button
-          v-show="validation === true"
-          block
-          variant="primary"
-          @click="submitData"
-        >
-          Submit
-        </b-button>
-        <b-alert
-          v-show="errorMessages.length > 0"
-          show
-          variant="warning"
-        >
-          {{ errorMessages }}
-        </b-alert>
-      </div>
+      
+      <b-button
+        v-show="validation === false"
+        variant="secondary"
+        @click="validUser"
+      >
+        Validate
+        <b-spinner
+          small
+          type="grow"
+        />
+      </b-button>
+      <b-button
+        v-show="validation === true"
+        block
+        variant="primary"
+        @click="submitData"
+      >
+        Submit
+      </b-button>
+      <b-alert
+        v-show="errorMessages.length > 0"
+        show
+        variant="warning"
+      >
+        {{ errorMessages }}
+      </b-alert>
     </form>
   </b-container>
 </template>
@@ -83,7 +86,7 @@
 <script>
 import Joi from '@hapi/joi';
 
-const SIGNUP_URL = 'http://localhost:5000/auth/signup';
+const SIGNUP_URL = 'http://localhost:5005/auth/signup';
 
 const schema = Joi.object().keys({
       username: Joi.string().alphanum().min(5).max(15).required(),
@@ -160,12 +163,15 @@ const schema = Joi.object().keys({
           password: this.password,
           password2: this.password2
         }
+        // result ==> validate via Joi.js
         const result = Joi.validate(user, schema);
+        // result.error is true
         if (result.error === null) {
           this.$data.errorMessages = '';
           this.$data.validation = true;
-          return true;
+            return true;
         } 
+        // its not valid
         if (result.error !== null) {
           this.errorMessages = result.error.message;
         }
@@ -175,23 +181,30 @@ const schema = Joi.object().keys({
           username: this.$data.username,
           password: this.$data.password,
         }
+        // post to the signup API
         fetch(SIGNUP_URL, {
           method: "post",
           body: JSON.stringify(body),
           headers: {
             'content-type': 'application/json'
           }
+
         }).then(res => {
+          // if the response is ok, go to login screen
           if (res.ok) {
-            return res.json()
+            this.$router.push('/login')
           } 
-            return res.json().then(err => {
+          // if response shows error, copy the error msg
+            return res.json().then(error => {
               throw new Error(error.message)
             })
+          // log the user output
           }).then(user => {
             console.log(user);
-        }).catch(err => {
-          console.log(err);
+        // error catch...confused here
+        }) .catch(err => {
+          this.errorMessages = '';
+          this.$data.errorMessages = 'username taken'
         })
       }
     }
