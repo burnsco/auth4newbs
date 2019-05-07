@@ -2,7 +2,7 @@ const express = require('express')
 const volleyball = require('volleyball')
 const cors = require('cors')
 
-require('dotenv').config
+require('dotenv').config()
 
 const app = express()
 
@@ -38,8 +38,8 @@ function errorHandler(err, req, res) {
 app.use(notFound);
 app.use(errorHandler);
 
-const port = process.env.PORT || 5005
+const port = process.env.PORT || 5000
 app.listen(port, () => {
-  console.log(`app listening on port ${port}`)
+  console.log(`****[ Server listening on port ${port} ]****`)
 });
 

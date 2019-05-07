@@ -1,29 +1,38 @@
 <template>
-  <b-container fluid>
-    <b-jumbotron class="mt-5">
-      <template slot="header">
-        Auth for Noobs
-      </template>
+  <div class="bg-secondary min-vh-100">
+    <b-container fluid>
+      <b-jumbotron>
+        <template slot="header">
+          Auth for Noobs
+        </template>
 
-      <template slot="lead">
-        This is a simple boilerplate for authentication from start to finish.
-      </template>
+        <template slot="lead">
+          This is a simple boilerplate for authentication from start to finish.
+        </template>
 
-      <hr class="my-4">
+        <hr class="my-4">
 
-      <p>
-        Please sign up to use this amazing site!
-      </p>
+        <p>
+          Please sign up to use this amazing site!
+        </p>
 
-      <router-link
-        to="/signup"
-        tag="b-button"
-        class="primary"
+        <router-link
+          to="/signup"
+          tag="b-button"
+          class="primary"
+        >
+          Sign Up
+        </router-link>
+      </b-jumbotron>
+
+      <img
+        src="https://images.pexels.com/photos/159282/technology-servers-server-159282.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+        alt=""
+        height="100%"
+        width="66%"
       >
-        Sign Up
-      </router-link>
-    </b-jumbotron>
-  </b-container>
+    </b-container>
+  </div>
 </template>
 
 <script>

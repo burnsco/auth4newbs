@@ -4,6 +4,7 @@ const router = express.Router()
 const bcrypt = require('bcryptjs')
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 router.use(cors())
 
@@ -80,9 +81,21 @@ router.post('/login', (req, res, next) => {
               _id: user._id,
               username: user.username
             }
+            console.log(`User ${payload.username} is attempting to log in`);
             // generate token for user
-            jwt.sign(payload, '')
-
+            jwt.sign(payload, process.env.TOKEN_SECRET, {
+              expiresIn: '1d'
+            }, (err, token) => {
+              if (err) {
+                res.status(422)
+                const error = new Error('token cant be created')
+                next(error)
+              } else {
+                console.log(`Creating token and logged in`);
+                res.json(token)
+                localStorage.token = token;
+              }
+            })
           } else {
             // its incorrect
             res.status(422)

@@ -11,6 +11,13 @@ export default new Router({
     {
       path: '/',
       name: 'home',
+      beforeEnter: (to, from, next) => {
+        if (localStorage.token) {
+          next('/dashboard')
+        } else {
+          next()
+        }
+      },
       component: Home,
     },
     {
@@ -26,6 +33,13 @@ export default new Router({
     {
       path: '/dashboard',
       name: 'Dashboard',
+      beforeEnter: (to, from, next) => {
+        if (localStorage.token) {
+          next()
+        } else {
+          next('/login')
+        }
+      },
       component: () => import(/* webpackChunkName: "Dashboard" */ './views/Dashboard.vue'),
     },
   ],
