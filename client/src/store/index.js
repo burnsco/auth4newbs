@@ -9,18 +9,23 @@ const store = new Vuex.Store({
       namedspaced: true,
 
       // module assets
-      state: {   } ,     // module state is already nested and not affected by namespace option
-      
+      state: {
+        user: {}
+
+        },
+
       mutations: {
-        login () {   }   // -> commit('account/login')
+        login ()      {   },   // -> commit('account/login')
+        isLoggedIn () {   } // --> commit('account/isLoggedIn)
       },
       actions: {
-        login () {   }   // --> dispatch('account/login)
+        login ()      {   } ,  // --> dispatch('account/login)
+        isLoggedIn () {   } // --> dispatch('account/isLoggedIn)
       },
       getters: {
-        isAdmin () {   } // --> commit('account/isAdmin')
+        isAdmin ()    {   }, // --> commit('account/isAdmin')
+        isLoggedIn () {   } // --> commit('account/isLoggedIn)
       },
-
 
        // nested modules
        modules: {

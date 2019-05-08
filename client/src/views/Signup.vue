@@ -203,6 +203,7 @@ const schema = Joi.object().keys({
             })
           // log the user output
           }).then(result => {
+            // save token, username to state (use vuex)
             localStorage.token = result;
         // error catch...confused here
         }) .catch(err => {

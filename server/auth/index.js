@@ -19,6 +19,27 @@ const schema = Joi.object().keys({
   password: Joi.string().regex(/^[a-zA-Z0-9]{5,15}$/).required(),
 });
 
+function createTokenSendResponse(user, res, next) {
+  const payload = {
+    _id: user._id,
+    username: user.username
+  }
+  console.log(`User ${payload.username} is attempting to log in`);
+  // generate token for user
+  jwt.sign(payload, process.env.TOKEN_SECRET, {
+    expiresIn: '1d'
+  }, (err, token) => {
+    if (err) {
+      res.status(422)
+      const error = new Error('token cant be created')
+      next(error)
+    } else {
+      console.log(`Creating token and logging in`);
+      res.json(token)
+    }
+  })
+}
+
 router.get('/', (req, res) => {
   res.json({message: 'LOCK'})
 })
@@ -47,9 +68,8 @@ router.post('/signup', (req, res, next) => {
           }
           // pass is hashed, so insert it into the DB
           users.insert(newUser).then(insertedUser => {
-            // delete the old password and show the final result
-            delete insertedUser.password
-            res.json(insertedUser)
+            // function to create token and save user at same time
+            createTokenSendResponse(insertedUser, res, next);
           })
         })
       }
@@ -73,36 +93,20 @@ router.post('/login', (req, res, next) => {
       // then the result ^ 'user' is found, compare the hashed to the front end pass
       if (user) {
         // using bcrypt.js to validate passwords (hash)
-        bcrypt.compare(req.body.password, user.password).then(result => {
+        bcrypt
+          .compare(req.body.password, user.password)
+          .then(result => {
           // if its true, give a cookie?
-          if (result) {
+            if (result) {
             // its correct, so create payload for token generation
-            const payload = {
-              _id: user._id,
-              username: user.username
-            }
-            console.log(`User ${payload.username} is attempting to log in`);
-            // generate token for user
-            jwt.sign(payload, process.env.TOKEN_SECRET, {
-              expiresIn: '1d'
-            }, (err, token) => {
-              if (err) {
-                res.status(422)
-                const error = new Error('token cant be created')
-                next(error)
-              } else {
-                console.log(`Creating token and logged in`);
-                res.json(token)
-                localStorage.token = token;
-              }
-            })
-          } else {
+              createTokenSendResponse(user, res, next)
+            } else {
             // its incorrect
-            res.status(422)
-            const error = new Error('Password Incorrect')
-            next(error)
-          }
-        })
+              res.status(422)
+              const error = new Error('Password Incorrect')
+              next(error)
+            }
+          })
         // if it isnt found
       } else {
         res.status(422)
